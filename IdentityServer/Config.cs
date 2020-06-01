@@ -41,9 +41,9 @@ namespace IdentityServer
                     RequirePkce = true,
                     RequireClientSecret = false,
                     AllowedScopes = { "openid", "profile", "email", "api.read" },
-                    RedirectUris = {"http://localhost:5001/auth/signin-callback"}, // test client runs on same host,
+                    RedirectUris = {"http://localhost:5001/auth/signin-callback"},
                     PostLogoutRedirectUris = new List<string> {"http://localhost:5001/auth/signout-callback"},
-                    AllowedCorsOrigins = {"http://localhost:5001" }, // test client runs on same host
+                    AllowedCorsOrigins = {"http://localhost:5001" },
                     AccessTokenLifetime = (int)TimeSpan.FromMinutes(120).TotalSeconds
                 }
             };
