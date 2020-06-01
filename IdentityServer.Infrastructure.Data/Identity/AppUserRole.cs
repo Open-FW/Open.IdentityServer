@@ -6,6 +6,5 @@ namespace IdentityServer.Infrastructure.Data.Identity
 {
     public class AppUserRole : IdentityUserRole<Guid>
     {
-        public AppUserRole() : base() { }
     }
 }

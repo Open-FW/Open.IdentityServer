@@ -6,8 +6,7 @@ import { AccountService } from './../../services/account.service'
 
 @Component({
     selector: 'is-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
     form: FormGroup

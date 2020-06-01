@@ -6,6 +6,5 @@ namespace IdentityServer.Infrastructure.Data.Identity
 {
     public class AppUserClaim : IdentityUserClaim<Guid>
     {
-        public AppUserClaim() : base() { }
     }
 }
