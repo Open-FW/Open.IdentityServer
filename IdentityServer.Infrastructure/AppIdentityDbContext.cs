@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-using IdentityServer.Infrastructure.Data.Identity;
+using IdentityServer.Domain.Identity;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

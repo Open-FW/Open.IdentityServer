@@ -1,8 +1,8 @@
 
 using System;
 
+using IdentityServer.Domain.Identity;
 using IdentityServer.Infrastructure;
-using IdentityServer.Infrastructure.Data.Identity;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

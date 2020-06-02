@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{22077AFB-3729-4C20-B7E2-CEFC28E19126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{22077AFB-3729-4C20-B7E2-CEFC28E19126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer.Infrastructure.Data", "IdentityServer.Infrastructure.Data\IdentityServer.Infrastructure.Data.csproj", "{46AE5E03-9055-4120-87EB-8565985E8880}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer.Infrastructure", "IdentityServer.Infrastructure\IdentityServer.Infrastructure.csproj", "{AD256EBE-1895-4661-BF9D-E7C97D30DD1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer.Infrastructure", "IdentityServer.Infrastructure\IdentityServer.Infrastructure.csproj", "{AD256EBE-1895-4661-BF9D-E7C97D30DD1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer.Domain", "IdentityServer.Domain\IdentityServer.Domain.csproj", "{A86E4350-F07D-4010-9315-3B25A9B6223A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +26,14 @@ Global
 		{22077AFB-3729-4C20-B7E2-CEFC28E19126}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22077AFB-3729-4C20-B7E2-CEFC28E19126}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22077AFB-3729-4C20-B7E2-CEFC28E19126}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46AE5E03-9055-4120-87EB-8565985E8880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46AE5E03-9055-4120-87EB-8565985E8880}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46AE5E03-9055-4120-87EB-8565985E8880}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46AE5E03-9055-4120-87EB-8565985E8880}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD256EBE-1895-4661-BF9D-E7C97D30DD1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD256EBE-1895-4661-BF9D-E7C97D30DD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD256EBE-1895-4661-BF9D-E7C97D30DD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD256EBE-1895-4661-BF9D-E7C97D30DD1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A86E4350-F07D-4010-9315-3B25A9B6223A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A86E4350-F07D-4010-9315-3B25A9B6223A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A86E4350-F07D-4010-9315-3B25A9B6223A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A86E4350-F07D-4010-9315-3B25A9B6223A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
