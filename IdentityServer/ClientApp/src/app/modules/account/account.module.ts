@@ -7,7 +7,17 @@ import { AccountMaterialModule } from './account-material.module'
 import { AccountServiceModule } from './account-service.module'
 import { AccountRoutingModule } from './account.routing'
 
+import { AccountDefaultLayout } from './layouts/account-default/account-default.layout'
+import { LoginComponent } from './components/login/login.component'
+import { LogoutComponent } from './components/logout/logout.components'
+
 @NgModule({
+    declarations: [
+        AccountDefaultLayout,
+
+        LoginComponent,
+        LogoutComponent
+    ],
     imports: [
         CommonModule,
 

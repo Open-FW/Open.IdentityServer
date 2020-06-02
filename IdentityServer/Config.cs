@@ -24,6 +24,10 @@ namespace IdentityServer
                 new ApiResource("resourceapi", "Resource API")
                 {
                     Scopes = {new Scope("api.read")}
+                },
+                new ApiResource("resourceis", "Resource IS")
+                {
+                    Scopes = {new Scope("is.admin")}
                 }
             };
         }
@@ -44,6 +48,19 @@ namespace IdentityServer
                     RedirectUris = {"http://localhost:5001/auth/signin-callback"},
                     PostLogoutRedirectUris = new List<string> {"http://localhost:5001/auth/signout-callback"},
                     AllowedCorsOrigins = {"http://localhost:5001" },
+                    AccessTokenLifetime = (int)TimeSpan.FromMinutes(120).TotalSeconds
+                },
+                new Client
+                {
+                    RequireConsent = false,
+                    ClientId = "is_spa",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AllowedScopes = { "openid", "profile", "email", "is.admin"},
+                    RedirectUris = {"http://localhost:5000/auth/signin-callback"},
+                    PostLogoutRedirectUris = new List<string> {"http://localhost:5000/auth/signout-callback"},
+                    AllowedCorsOrigins = {"http://localhost:5000"},
                     AccessTokenLifetime = (int)TimeSpan.FromMinutes(120).TotalSeconds
                 }
             };

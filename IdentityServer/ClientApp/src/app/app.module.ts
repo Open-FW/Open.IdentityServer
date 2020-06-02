@@ -4,6 +4,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppRoutingModule } from './app.routing'
 import { RootComponent } from './root.component'
+import { GraphQLModule } from './graphql.module'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { AuthInterceptor } from './interceptors/auth.interceptor'
 
 @NgModule({
     declarations: [
@@ -13,9 +16,16 @@ import { RootComponent } from './root.component'
         BrowserModule,
         BrowserAnimationsModule,
 
+        GraphQLModule,
+        HttpClientModule,
+
         AppRoutingModule
     ],
-    providers: [],
+    providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true
+    }],
     bootstrap: [RootComponent]
 })
 export class AppModule { }

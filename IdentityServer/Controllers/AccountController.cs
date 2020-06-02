@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using IdentityServer.Infrastructure.Data.Identity;
+using IdentityServer.Domain.Identity;
 using IdentityServer.Models;
 
 using IdentityServer4.Services;
@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityServer.Controllers
 {
     [ApiController]
-    [Route("auth/[controller]")]
+    [Route("api/auth/[controller]")]
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager;
@@ -31,9 +31,9 @@ namespace IdentityServer.Controllers
             this.interactionService = interactionService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("{action}")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return Ok();
         }

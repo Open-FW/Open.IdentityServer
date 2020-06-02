@@ -27,8 +27,8 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration.GetConnectionString("RHIdentity");
-            string migrationAssembly = "RH.IdentityServer.Inftrastructure";
+            string connectionString = Configuration.GetConnectionString("Default");
+            string migrationAssembly = "IdentityServer.Infrastructure";
 
             services.AddControllers();
 
