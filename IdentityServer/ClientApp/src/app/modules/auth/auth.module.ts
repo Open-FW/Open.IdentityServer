@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 
 import { AuthRoutingModule } from './auth.routing'
 
-import { AuthDefaultLayout } from '../layouts/auth-default/auth-default.layout'
+import { AuthDefaultLayout } from './layouts/auth-default/auth-default.layout'
 
 import { SigninComponent } from './components/signin/signin.component'
 import { SignoutCallbackComponent } from './components/signout-callback/signout-callback.component'
