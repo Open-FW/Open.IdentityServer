@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,13 +29,14 @@ namespace IdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("Default");
+            string provider = Configuration["Provider"];
             string migrationAssembly = "IdentityServer.Infrastructure";
 
             services.AddControllers();
 
             services.AddDbContext<AppIdentityDbContext>(options =>
             {
-                options.UseSqlServer(connectionString, options => options.MigrationsAssembly(migrationAssembly));
+                options.UseProvider(provider, connectionString, migrationAssembly);
             });
 
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
@@ -44,21 +46,21 @@ namespace IdentityServer
                 options.UserInteraction.LoginUrl = "/account/login";
                 options.UserInteraction.LogoutUrl = "/account/logout";
             })
-                .AddOperationalStore<AppPersistedGrantDbContext>(options =>
-                {
-                    options.ConfigureDbContext = conf => conf.UseSqlServer(connectionString, options => options.MigrationsAssembly(migrationAssembly));
+            .AddOperationalStore<AppPersistedGrantDbContext>(options =>
+            {
+                options.ConfigureDbContext = conf => conf.UseProvider(provider, connectionString, migrationAssembly);
 
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
-                })
-                .AddConfigurationStore<AppConfigurationDbContext>(options =>
-                {
-                    options.ConfigureDbContext = conf => conf.UseSqlServer(connectionString, options => options.MigrationsAssembly(migrationAssembly));
-                })
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
-                .AddAspNetIdentity<AppUser>();
+                options.EnableTokenCleanup = true;
+                options.TokenCleanupInterval = 30;
+            })
+            .AddConfigurationStore<AppConfigurationDbContext>(options =>
+            {
+                options.ConfigureDbContext = conf => conf.UseProvider(provider, connectionString, migrationAssembly);
+            })
+            .AddInMemoryIdentityResources(Config.GetIdentityResources())
+            .AddInMemoryApiResources(Config.GetApiResources())
+            .AddInMemoryClients(Config.GetClients())
+            .AddAspNetIdentity<AppUser>();
 
             if (Environment.IsDevelopment())
             {
