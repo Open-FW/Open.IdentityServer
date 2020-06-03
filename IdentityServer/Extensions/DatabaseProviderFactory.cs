@@ -24,7 +24,7 @@ public static class DatabaseProviderFactory
                 builder = builder.UseSqlite(connectionString, options => options.MigrationsAssembly(migrationAssembly));
                 break;
             default:
-                throw new ArgumentException("Unknown DB provider");
+                throw new ArgumentException("Unknown DB provider -- valid values are PostgreSQL, MSSQL, MySQL, SQLite");
         }
 
         return builder;

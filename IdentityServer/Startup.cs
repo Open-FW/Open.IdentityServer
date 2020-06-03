@@ -28,9 +28,9 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration.GetConnectionString("Default");
             string provider = Configuration["Provider"];
-            string migrationAssembly = "IdentityServer.Infrastructure";
+            string connectionString = Configuration.GetSection("ConnectionStrings").GetSection(provider)["Default"]; //GetConnectionString("Default");
+            string migrationAssembly = $"IdentityServer.Migrations.{provider}";
 
             services.AddControllers();
 
