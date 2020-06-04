@@ -55,7 +55,7 @@ export class AuthService {
     }
 
     get state(): any {
-        return this.user ? this.user.state : null
+        return this.user?.state
     }
 
     get isAuthenticated(): boolean {
@@ -67,6 +67,6 @@ export class AuthService {
     }
 
     get name(): string {
-        return this.user ? this.user.profile.name : ''
+        return this.user?.profile?.name ?? ''
     }
 }
