@@ -3,6 +3,7 @@ using System;
 
 using IdentityServer.Domain.Identity;
 using IdentityServer.Infrastructure;
+using IdentityServer.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,9 +48,6 @@ namespace IdentityServer
                 .AddOperationalStore<AppPersistedGrantDbContext>(options =>
                 {
                     options.ConfigureDbContext = conf => conf.UseSqlServer(connectionString, options => options.MigrationsAssembly(migrationAssembly));
-
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
                 })
                 .AddConfigurationStore<AppConfigurationDbContext>(options =>
                 {
@@ -58,6 +56,7 @@ namespace IdentityServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
+                .AddProfileService<ProfileService>()
                 .AddAspNetIdentity<AppUser>();
 
             if (Environment.IsDevelopment())

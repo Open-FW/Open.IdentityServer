@@ -57,7 +57,7 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedScopes = { "openid", "profile", "email", "is.admin"},
+                    AllowedScopes = { "openid", "profile", "email", "role", "is.admin"},
                     RedirectUris = {"http://localhost:5000/auth/signin-callback"},
                     PostLogoutRedirectUris = new List<string> {"http://localhost:5000/auth/signout-callback"},
                     AllowedCorsOrigins = {"http://localhost:5000"},
