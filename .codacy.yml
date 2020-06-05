@@ -3,3 +3,6 @@ engines:
   tslint:
     enabled: true
     base_sub_dir: IdentityServer/ClientApp
+exclude_paths:
+  - 'IdentityServer.Migrations.*/**'
+  - 'spec/**/*'
