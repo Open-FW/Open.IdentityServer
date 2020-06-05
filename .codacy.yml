@@ -1,0 +1,5 @@
+---
+engines:
+  tslint:
+    enabled: true
+    base_sub_dir: IdentityServer/ClientApp
