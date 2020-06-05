@@ -1,4 +1,0 @@
-plugins:
-  tslint:
-    enabled: true
-    config: IdentityServer/ClientApp/tslint.json
