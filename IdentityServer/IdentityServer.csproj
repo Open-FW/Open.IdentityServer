@@ -19,6 +19,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IdentityServer.Infrastructure\IdentityServer.Infrastructure.csproj" />
+    <ProjectReference Include="..\IdentityServer.Migrations.PostgreSQL\IdentityServer.Migrations.PostgreSQL.csproj" />
+    <ProjectReference Include="..\IdentityServer.Migrations.MSSQL\IdentityServer.Migrations.MSSQL.csproj" />
+    <ProjectReference Include="..\IdentityServer.Migrations.SQLite\IdentityServer.Migrations.SQLite.csproj" />
+    <ProjectReference Include="..\IdentityServer.Migrations.MySQL\IdentityServer.Migrations.MySQL.csproj" />
   </ItemGroup>
 
 

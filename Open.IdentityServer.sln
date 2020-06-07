@@ -14,7 +14,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer.Infrastructure", "IdentityServer.Infrastructure\IdentityServer.Infrastructure.csproj", "{AD256EBE-1895-4661-BF9D-E7C97D30DD1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer.Domain", "IdentityServer.Domain\IdentityServer.Domain.csproj", "{A86E4350-F07D-4010-9315-3B25A9B6223A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer.Domain", "IdentityServer.Domain\IdentityServer.Domain.csproj", "{A86E4350-F07D-4010-9315-3B25A9B6223A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer.Migrations.MSSQL", "IdentityServer.Migrations.MSSQL\IdentityServer.Migrations.MSSQL.csproj", "{C5134924-31A3-4588-A686-F9A9482EB701}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer.Migrations.MySQL", "IdentityServer.Migrations.MySQL\IdentityServer.Migrations.MySQL.csproj", "{47B2B1F0-9B11-4A69-A643-BEB1C7E99532}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer.Migrations.PostgreSQL", "IdentityServer.Migrations.PostgreSQL\IdentityServer.Migrations.PostgreSQL.csproj", "{19FA7505-9A2B-4D8C-8EE0-06D8731113DC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer.Migrations.SQLite", "IdentityServer.Migrations.SQLite\IdentityServer.Migrations.SQLite.csproj", "{6B910AF9-1888-4294-BB46-24F3A66B63D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +42,22 @@ Global
 		{A86E4350-F07D-4010-9315-3B25A9B6223A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A86E4350-F07D-4010-9315-3B25A9B6223A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A86E4350-F07D-4010-9315-3B25A9B6223A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5134924-31A3-4588-A686-F9A9482EB701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5134924-31A3-4588-A686-F9A9482EB701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5134924-31A3-4588-A686-F9A9482EB701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5134924-31A3-4588-A686-F9A9482EB701}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B2B1F0-9B11-4A69-A643-BEB1C7E99532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B2B1F0-9B11-4A69-A643-BEB1C7E99532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B2B1F0-9B11-4A69-A643-BEB1C7E99532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B2B1F0-9B11-4A69-A643-BEB1C7E99532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19FA7505-9A2B-4D8C-8EE0-06D8731113DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19FA7505-9A2B-4D8C-8EE0-06D8731113DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19FA7505-9A2B-4D8C-8EE0-06D8731113DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19FA7505-9A2B-4D8C-8EE0-06D8731113DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B910AF9-1888-4294-BB46-24F3A66B63D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B910AF9-1888-4294-BB46-24F3A66B63D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B910AF9-1888-4294-BB46-24F3A66B63D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B910AF9-1888-4294-BB46-24F3A66B63D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

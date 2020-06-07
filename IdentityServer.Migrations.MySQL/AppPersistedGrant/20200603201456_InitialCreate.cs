@@ -1,10 +1,9 @@
 ﻿using System;
-
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace IdentityServer.Infrastructure.Migrations.AppPersistedGrant
+namespace IdentityServer.Migrations.MySQL.AppPersistedGrant
 {
-    public partial class InitialDbMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
