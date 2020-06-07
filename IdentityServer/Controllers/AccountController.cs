@@ -83,15 +83,25 @@ namespace IdentityServer.Controllers
         }
 
         [Route("external-login")]
-        public IActionResult ExternalLogin(string json)
+        public async Task<IActionResult> ExternalLogin(string json)
         {
             var externalProvider = JsonConvert.DeserializeObject<ExternalProvider>(json);
+
+            var context = await this.interactionService.GetAuthorizationContextAsync(externalProvider.ReturnUrl);
+            if (context == null)
+            {
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                await this.signInManager.SignOutAsync();
+
+                return BadRequest();
+            }
 
             var prop = this.signInManager.ConfigureExternalAuthenticationProperties(externalProvider.Provider, Url.Action(nameof(HandleExternalLogin), new { externalProvider.ReturnUrl }));
 
             return Challenge(prop, externalProvider.Provider);
         }
 
+        [Route("{action}")]
         public async Task<IActionResult> HandleExternalLogin(string returnUrl)
         {
             var info = await signInManager.GetExternalLoginInfoAsync();
@@ -107,7 +117,7 @@ namespace IdentityServer.Controllers
 
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
 
-            if (!result.Succeeded) //user does not exist yet
+            if (!result.Succeeded)
             {
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 var user = await this.userManager.FindByEmailAsync(email);
