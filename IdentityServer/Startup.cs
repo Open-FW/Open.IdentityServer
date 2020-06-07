@@ -76,6 +76,17 @@ namespace IdentityServer
                     options.ClientId = Configuration.GetSection("External").GetSection("GitHub")["ClientId"];
                     options.ClientSecret = Configuration.GetSection("External").GetSection("GitHub")["Secret"];
 
+                })
+                .AddOpenIdConnect("Azure", options =>
+                {
+                    options.CallbackPath = new PathString("/auth/azure-callback");
+
+                    options.Authority = $"https://login.microsoftonline.com/{Configuration.GetSection("External").GetSection("Azure")["Tenant"]}";
+
+                    options.ClientId = Configuration.GetSection("External").GetSection("Azure")["ClientId"];
+                    options.ClientSecret = Configuration.GetSection("External").GetSection("Azure")["Secret"];
+
+                    options.ResponseType = "id_token";
                 });
 
 
