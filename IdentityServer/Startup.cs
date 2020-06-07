@@ -6,9 +6,8 @@ using IdentityServer.Infrastructure;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -62,6 +61,25 @@ namespace IdentityServer
             .AddInMemoryClients(Config.GetClients())
             .AddAspNetIdentity<AppUser>();
 
+            services.AddAuthentication()
+                .AddGoogle("Google", options =>
+                {
+                    options.CallbackPath = new PathString("/auth/google-callback");
+
+                    options.ClientId = Configuration.GetSection("External").GetSection("Google")["ClientId"];
+                    options.ClientSecret = Configuration.GetSection("External").GetSection("Google")["Secret"];
+                })
+                .AddGitHub("GitHub", options =>
+                {
+                    options.CallbackPath = new PathString("/auth/github-callback");
+
+                    options.ClientId = Configuration.GetSection("External").GetSection("GitHub")["ClientId"];
+                    options.ClientSecret = Configuration.GetSection("External").GetSection("GitHub")["Secret"];
+
+                });
+
+
+
             if (Environment.IsDevelopment())
             {
                 identityBuilder.AddDeveloperSigningCredential();
@@ -88,6 +106,8 @@ namespace IdentityServer
             app.UseRouting();
 
             app.UseIdentityServer();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

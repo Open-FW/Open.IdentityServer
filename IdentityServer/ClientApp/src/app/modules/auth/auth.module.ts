@@ -9,10 +9,13 @@ import { SigninComponent } from './components/signin/signin.component'
 import { SignoutCallbackComponent } from './components/signout-callback/signout-callback.component'
 import { SigninCallbackComponent } from './components/signin-callback/signin-callback.component'
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component'
+import { GoogleCallbackComponent } from './components/google-callback/google-callback.component'
 
 @NgModule({
     declarations: [
         AuthDefaultLayout,
+
+        GoogleCallbackComponent,
 
         SigninComponent,
         SigninCallbackComponent,

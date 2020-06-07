@@ -7,6 +7,7 @@ import { RootComponent } from './root.component'
 import { GraphQLModule } from './graphql.module'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { AuthInterceptor } from './interceptors/auth.interceptor'
+import { HeaderHttpInterceptor } from './interceptors/header.interceptor'
 
 @NgModule({
     declarations: [
@@ -22,6 +23,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor'
         AppRoutingModule
     ],
     providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: HeaderHttpInterceptor,
+        multi: true
+    }, {
         provide: HTTP_INTERCEPTORS,
         useClass: AuthInterceptor,
         multi: true

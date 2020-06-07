@@ -1,7 +1,10 @@
-﻿using System;
+using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using IdentityServer.Domain.Identity;
+using IdentityServer.Model;
 using IdentityServer.Models;
 
 using IdentityServer4.Services;
@@ -10,6 +13,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using Newtonsoft.Json;
 
 namespace IdentityServer.Controllers
 {
@@ -75,6 +80,58 @@ namespace IdentityServer.Controllers
             }
 
             return BadRequest(ModelState);
+        }
+
+        [Route("external-login")]
+        public IActionResult ExternalLogin(string json)
+        {
+            var externalProvider = JsonConvert.DeserializeObject<ExternalProvider>(json);
+
+            var prop = this.signInManager.ConfigureExternalAuthenticationProperties(externalProvider.Provider, Url.Action(nameof(HandleExternalLogin), new { externalProvider.ReturnUrl }));
+
+            return Challenge(prop, externalProvider.Provider);
+        }
+
+        public async Task<IActionResult> HandleExternalLogin(string returnUrl)
+        {
+            var info = await signInManager.GetExternalLoginInfoAsync();
+
+            var context = await this.interactionService.GetAuthorizationContextAsync(returnUrl);
+            if (context == null)
+            {
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                await this.signInManager.SignOutAsync();
+
+                return BadRequest();
+            }
+
+            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+
+            if (!result.Succeeded) //user does not exist yet
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var user = await this.userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    user = new AppUser
+                    {
+                        UserName = email,
+                        Email = email,
+                        EmailConfirmed = true
+                    };
+
+                    var createResult = await userManager.CreateAsync(user);
+                    if (!createResult.Succeeded)
+                        throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
+                }
+
+
+                await userManager.AddLoginAsync(user, info);
+                await signInManager.SignInAsync(user, isPersistent: false);
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            }
+
+            return Redirect(returnUrl);
         }
 
         [HttpGet]

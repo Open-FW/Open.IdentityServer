@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatDividerModule } from '@angular/material/divider'
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatIconModule } from '@angular/material/icon'
+import { MatDialogModule } from '@angular/material/dialog'
 
 const ACCOUNT_MATERIAL_MODULES = [
     FlexLayoutModule,
@@ -20,6 +21,7 @@ const ACCOUNT_MATERIAL_MODULES = [
     MatCheckboxModule,
     MatDividerModule,
     MatIconModule,
+    MatDialogModule
 ]
 
 @NgModule({
