@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -137,7 +136,12 @@ namespace IdentityServer.Controllers
 
                     var createResult = await this.userManager.CreateAsync(user);
                     if (!createResult.Succeeded)
-                        throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
+                    {
+                        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                        await this.signInManager.SignOutAsync();
+
+                        return BadRequest(createResult);
+                    }
                 }
 
 
