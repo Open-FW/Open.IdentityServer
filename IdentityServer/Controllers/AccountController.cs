@@ -51,6 +51,11 @@ namespace IdentityServer.Controllers
             {
                 var context = await this.interactionService.GetAuthorizationContextAsync(model.ReturnUrl);
 
+                if (context == null)
+                {
+                    return BadRequest();
+                }
+
                 var user = await this.userManager.FindByNameAsync(model.UserName);
                 if (user != null && await this.userManager.CheckPasswordAsync(user, model.Password))
                 {
@@ -130,15 +135,15 @@ namespace IdentityServer.Controllers
                         EmailConfirmed = true
                     };
 
-                    var createResult = await userManager.CreateAsync(user);
+                    var createResult = await this.userManager.CreateAsync(user);
                     if (!createResult.Succeeded)
                         throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
                 }
 
 
-                await userManager.AddLoginAsync(user, info);
-                await signInManager.SignInAsync(user, isPersistent: false);
-                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                await this.userManager.AddLoginAsync(user, info);
+                await this.signInManager.SignInAsync(user, isPersistent: false);
+                await this.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             }
 
             return Redirect(returnUrl);
