@@ -25,16 +25,17 @@ namespace IdentityServer.Models
         {
             var identity = context.Subject.Identity.Name;
             var user = await this.userManager.FindByNameAsync(identity);
-            var roles = await this.userManager.GetRolesAsync(user);
 
-            context.IssuedClaims.AddRange(roles.Select(s => new System.Security.Claims.Claim(JwtClaimTypes.Role, s)));
-
+            if (user != null)
+            {
+                var roles = await this.userManager.GetRolesAsync(user);
+                context.IssuedClaims.AddRange(roles.Select(s => new System.Security.Claims.Claim(JwtClaimTypes.Role, s)));
+            }
         }
 
         public async Task IsActiveAsync(IsActiveContext context)
         {
             var user = await this.userManager.FindByNameAsync(context.Subject.Identity.Name);
-
             context.IsActive = user != null;
         }
     }

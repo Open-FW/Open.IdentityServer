@@ -18,18 +18,15 @@ namespace IdentityServer.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager;
-        private readonly RoleManager<AppRole> roleManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IIdentityServerInteractionService interactionService;
 
         public AccountController(
             UserManager<AppUser> userManager,
-            RoleManager<AppRole> roleManager,
             SignInManager<AppUser> signInManager,
             IIdentityServerInteractionService interactionService)
         {
             this.userManager = userManager;
-            this.roleManager = roleManager;
             this.signInManager = signInManager;
             this.interactionService = interactionService;
         }
@@ -38,20 +35,6 @@ namespace IdentityServer.Controllers
         [Route("{action}")]
         public async Task<IActionResult> Create()
         {
-            var name = this.User.Identity.Name;
-
-            var appUser = await this.userManager.FindByNameAsync(name);
-
-            var role = await this.roleManager.FindByNameAsync("Admin");
-            if (role == null)
-            {
-                role = new AppRole("Admin");
-                await this.roleManager.CreateAsync(role);
-            }
-
-
-            await this.userManager.AddToRoleAsync(appUser, "Admin");
-
             return Ok();
         }
 
