@@ -1,14 +1,18 @@
 
+using Microsoft.Extensions.Logging;
+
 using Novell.Directory.Ldap;
 
 namespace IdentityServer.Domain.Modules.LdapModule
 {
     public class LdapService
     {
+        private readonly ILogger<LdapService> logger;
         private readonly LdapSetting ldap;
 
-        public LdapService(LdapSetting ldap)
+        public LdapService(ILogger<LdapService> logger, LdapSetting ldap)
         {
+            this.logger = logger;
             this.ldap = ldap;
         }
 
@@ -43,7 +47,7 @@ namespace IdentityServer.Domain.Modules.LdapModule
             }
             catch (LdapException ex)
             {
-                // Log exception
+                this.logger.LogError(ex.Message, ex.Data);
             }
 
             return null;
