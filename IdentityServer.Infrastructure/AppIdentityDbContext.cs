@@ -1,7 +1,8 @@
-﻿
+
 using System;
 
 using IdentityServer.Domain.Identity;
+using IdentityServer.Domain.Modules.ProviderModule;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ namespace IdentityServer.Infrastructure
 {
     public class AppIdentityDbContext : IdentityDbContext<AppUser, AppRole, Guid, AppUserClaim, AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken>
     {
+        public DbSet<Provider> Providers { get; set; } = null!;
+
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : base(options)
         {
         }

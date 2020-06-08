@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
         this.form = this.fb.group({
             userName: ['', Validators.required],
             password: ['', Validators.required],
-            rememberMe: [false]
+            rememberMe: [false],
+            ldap: [false]
         })
     }
 
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit {
                 userName: this.form.value.userName,
                 password: this.form.value.password,
                 rememberMe: this.form.value.rememberMe,
+                ldap: this.form.value.ldap,
                 returnUrl: this.activeRoute.snapshot.queryParamMap.get('ReturnUrl')
             }).subscribe(s => window.location.href = s, (error) => console.log(error))
         }

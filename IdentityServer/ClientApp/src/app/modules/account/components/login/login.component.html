@@ -13,11 +13,10 @@
                 <mat-form-field>
                     <mat-label>Enter your password</mat-label>
                     <input matInput [type]="'password'" formControlName="password">
-                    <button type="button" mat-icon-button matSuffix>
-                        <mat-icon>visibility_off</mat-icon>
-                    </button>
+                    <mat-icon matSuffix>visibility_off</mat-icon>
                 </mat-form-field>
                 <mat-checkbox formControlName="rememberMe">Remember me</mat-checkbox>
+                <mat-checkbox formControlName="ldap">LDAP</mat-checkbox>
             </mat-card-content>
             <mat-divider></mat-divider>
             <mat-card-actions>

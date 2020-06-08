@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace IdentityServer.Models
 {
@@ -11,6 +11,8 @@ namespace IdentityServer.Models
         public string Password { get; set; } = null!;
 
         public bool RememberMe { get; set; }
+
+        public bool Ldap { get; set; }
 
         public string ReturnUrl { get; set; } = null!;
     }

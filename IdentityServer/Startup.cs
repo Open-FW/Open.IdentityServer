@@ -2,6 +2,8 @@
 using System;
 
 using IdentityServer.Domain.Identity;
+using IdentityServer.Domain.Modules.LdapModule;
+using IdentityServer.Domain.Modules.ProviderModule;
 using IdentityServer.Infrastructure;
 
 using Microsoft.AspNetCore.Builder;
@@ -28,15 +30,16 @@ namespace IdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             string provider = Configuration["Provider"];
-            string connectionString = Configuration.GetSection("ConnectionStrings").GetSection(provider)["Default"]; //GetConnectionString("Default");
+            string connectionString = Configuration.GetSection("ConnectionStrings").GetSection(provider)["Default"];
             string migrationAssembly = $"IdentityServer.Migrations.{provider}";
+
+            services.AddSingleton(Configuration.GetSection("LDAP").Get<LdapSetting>());
 
             services.AddControllers();
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-            {
-                options.UseProvider(provider, connectionString, migrationAssembly);
-            });
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseProvider(provider, connectionString, migrationAssembly));
+
+            services.AddScoped<LdapService>();
 
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 
@@ -62,31 +65,32 @@ namespace IdentityServer
             .AddAspNetIdentity<AppUser>();
 
             services.AddAuthentication()
-                .AddGoogle("Google", options =>
+                .AddGoogle(nameof(Provider.Google), options =>
                 {
                     options.CallbackPath = new PathString("/auth/google-callback");
 
-                    options.ClientId = Configuration.GetSection("External").GetSection("Google")["ClientId"];
-                    options.ClientSecret = Configuration.GetSection("External").GetSection("Google")["Secret"];
+                    var google = Configuration.GetSection("External").GetSection(nameof(Provider.Google)).Get<GoogleProviderSetting>();
+                    options.ClientId = google.ClientId;
+                    options.ClientSecret = google.ClientSecret;
                 })
-                .AddGitHub("GitHub", options =>
+                .AddGitHub(nameof(Provider.GitHub), options =>
                 {
                     options.CallbackPath = new PathString("/auth/github-callback");
 
-                    options.ClientId = Configuration.GetSection("External").GetSection("GitHub")["ClientId"];
-                    options.ClientSecret = Configuration.GetSection("External").GetSection("GitHub")["Secret"];
+                    var github = Configuration.GetSection("External").GetSection(nameof(Provider.GitHub)).Get<GitHubProviderSetting>();
+                    options.ClientId = github.ClientId;
+                    options.ClientSecret = github.ClientSecret;
 
                 })
-                .AddOpenIdConnect("Azure", options =>
+                .AddOpenIdConnect(nameof(Provider.Azure), Provider.Azure, options =>
                 {
                     options.CallbackPath = new PathString("/auth/azure-callback");
 
-                    options.Authority = $"https://login.microsoftonline.com/{Configuration.GetSection("External").GetSection("Azure")["Tenant"]}";
-
-                    options.ClientId = Configuration.GetSection("External").GetSection("Azure")["ClientId"];
-                    options.ClientSecret = Configuration.GetSection("External").GetSection("Azure")["Secret"];
-
-                    options.ResponseType = "id_token";
+                    var azure = Configuration.GetSection("External").GetSection(nameof(Provider.Azure)).Get<AzureProviderSetting>();
+                    options.Authority = azure.AuthorityFull;
+                    options.ClientId = azure.ClientId;
+                    options.ClientSecret = azure.ClientSecret;
+                    options.ResponseType = azure.ResponseType;
                 });
 
 

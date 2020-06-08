@@ -1,8 +1,9 @@
-using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using IdentityServer.Domain.Identity;
+using IdentityServer.Domain.Modules.LdapModule;
+using IdentityServer.Domain.Modules.ProviderModule;
 using IdentityServer.Model;
 using IdentityServer.Models;
 
@@ -24,15 +25,18 @@ namespace IdentityServer.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IIdentityServerInteractionService interactionService;
+        private readonly LdapService ldap;
 
         public AccountController(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            IIdentityServerInteractionService interactionService)
+            IIdentityServerInteractionService interactionService,
+            LdapService ldap)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.interactionService = interactionService;
+            this.ldap = ldap;
         }
 
         [HttpGet]
@@ -55,30 +59,41 @@ namespace IdentityServer.Controllers
                     return BadRequest();
                 }
 
-                var user = await this.userManager.FindByNameAsync(model.UserName);
-                if (user != null && await this.userManager.CheckPasswordAsync(user, model.Password))
+                if (model.Ldap)
                 {
-                    AuthenticationProperties? properties = null;
-                    if (AccountOptions.AllowRememberLogin && model.RememberMe)
+                    var ldapUser = ldap.ValidateUser(model.UserName, model.Password);
+                    if (ldapUser != null)
                     {
-                        properties = new AuthenticationProperties
+                        var result = await signInManager.ExternalLoginSignInAsync(nameof(Provider.LDAP), ldapUser.Id.ToString(), isPersistent: model.RememberMe);
+                        if (!result.Succeeded)
                         {
-                            IsPersistent = true,
-                            ExpiresUtc = DateTimeOffset.Now.Add(AccountOptions.RememberMeLoginDuration)
-                        };
-                    }
+                            var user = await this.userManager.FindByNameAsync(model.UserName);
+                            if (user == null)
+                            {
+                                user = new AppUser(model.UserName) { Email = ldapUser.Email, EmailConfirmed = true };
+                                var createResult = await this.userManager.CreateAsync(user);
+                                if (!createResult.Succeeded)
+                                {
+                                    return BadRequest(createResult.Errors);
+                                }
+                            }
+                            await this.userManager.AddLoginAsync(user, new UserLoginInfo(nameof(Provider.LDAP), ldapUser.Id.ToString(), Provider.LDAP));
+                            await this.signInManager.SignInAsync(user, isPersistent: model.RememberMe);
+                        }
 
-                    await this.signInManager.SignInAsync(user, properties);
-
-                    if (context != null)
-                    {
                         return Ok(model.ReturnUrl);
                     }
-                    else
+                }
+                else
+                {
+                    var user = await this.userManager.FindByNameAsync(model.UserName);
+                    if (user != null && await this.userManager.CheckPasswordAsync(user, model.Password))
                     {
-                        throw new Exception("invalid return URL");
+                        await this.signInManager.SignInAsync(user, isPersistent: model.RememberMe);
+                        return Ok(model.ReturnUrl);
                     }
                 }
+
 
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
@@ -89,7 +104,7 @@ namespace IdentityServer.Controllers
         [Route("external-login")]
         public async Task<IActionResult> ExternalLogin(string json)
         {
-            var externalProvider = JsonConvert.DeserializeObject<ExternalProvider>(json);
+            var externalProvider = JsonConvert.DeserializeObject<ExternalProviderModel>(json);
 
             var context = await this.interactionService.GetAuthorizationContextAsync(externalProvider.ReturnUrl);
             if (context == null)
