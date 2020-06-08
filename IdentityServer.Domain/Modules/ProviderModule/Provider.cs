@@ -4,10 +4,10 @@ namespace IdentityServer.Domain.Modules.ProviderModule
 {
     public class Provider
     {
-        public const string Google = "Google";
-        public const string GitHub = "GitHub";
-        public const string Azure = "Azure";
-        public const string LDAP = "LDAP";
+        public static readonly string Google = "Google";
+        public static readonly string GitHub = "GitHub";
+        public static readonly string Azure = "Azure";
+        public static readonly string LDAP = "LDAP";
 
         [Key]
         public string AuthenticationScheme { get; set; } = null!;

@@ -2,6 +2,6 @@ namespace IdentityServer.Models
 {
     public static class AccountOptions
     {
-        public const string InvalidCredentialsErrorMessage = "Invalid username or password";
+        public static readonly string InvalidCredentialsErrorMessage = "Invalid username or password";
     }
 }

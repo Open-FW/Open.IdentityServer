@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 
 import { AccountServiceModule } from './../account-service.module'
-import { Login } from '../models/login'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
+import { Login } from '../models/login'
 import { ExternalProvider } from '../models/external-provider'
 
 @Injectable({ providedIn: AccountServiceModule })
