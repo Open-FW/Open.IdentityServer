@@ -339,7 +339,3 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-
-# Other files
-IdentityServer/appsettings.json
-IdentityServer/appsettings.Development.json
