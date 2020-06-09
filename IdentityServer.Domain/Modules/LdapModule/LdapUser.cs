@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using Novell.Directory.Ldap;
 
@@ -9,7 +10,7 @@ namespace IdentityServer.Domain.Modules.LdapModule
         public Guid Id { get; set; }
         public string Email { get; set; } = null!;
 
-        public static LdapUser CreateFromResult(LdapSearchResult result)
+        public static LdapUser CreateFromResult([NotNull]LdapSearchResult result)
         {
             return new LdapUser
             {

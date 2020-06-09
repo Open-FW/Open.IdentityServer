@@ -15,7 +15,7 @@ namespace IdentityServer.Domain.Modules.ProviderModule
 
         public static IEnumerable<Provider> GetProviders()
         {
-            return new List<Provider>()
+            return new List<Provider>
             {
                 new Provider
                 {
