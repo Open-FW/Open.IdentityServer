@@ -5,6 +5,7 @@ using IdentityServer.Domain.Identity;
 using IdentityServer.Domain.Modules.LdapModule;
 using IdentityServer.Domain.Modules.ProviderModule;
 using IdentityServer.Infrastructure;
+using IdentityServer.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -62,6 +63,7 @@ namespace IdentityServer
             .AddInMemoryIdentityResources(Config.GetIdentityResources())
             .AddInMemoryApiResources(Config.GetApiResources())
             .AddInMemoryClients(Config.GetClients())
+            .AddProfileService<ProfileService>()
             .AddAspNetIdentity<AppUser>();
 
             services.AddAuthentication()
