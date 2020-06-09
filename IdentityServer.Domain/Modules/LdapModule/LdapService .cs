@@ -23,7 +23,7 @@ namespace IdentityServer.Domain.Modules.LdapModule
             {
                 using (var connection = new LdapConnection { SecureSocketLayer = false })
                 {
-                    connection.Connect(this.ldap.Host, ldap.Port);
+                    connection.Connect(this.ldap.Host, this.ldap.Port);
                     connection.Bind(userDn, password);
 
                     if (!connection.Bound)
