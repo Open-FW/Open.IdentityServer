@@ -66,36 +66,46 @@ namespace IdentityServer
             .AddProfileService<ProfileService>()
             .AddAspNetIdentity<AppUser>();
 
-            services.AddAuthentication()
-                .AddGoogle(nameof(Provider.Google), options =>
+            var authentication = services.AddAuthentication();
+
+            var google = Configuration.GetSection("External").GetSection(nameof(Provider.Google)).Get<GoogleProviderSetting>();
+            if (!String.IsNullOrWhiteSpace(google?.ClientId))
+            {
+                authentication.AddGoogle(nameof(Provider.Google), options =>
                 {
                     options.CallbackPath = new PathString("/auth/google-callback");
 
-                    var google = Configuration.GetSection("External").GetSection(nameof(Provider.Google)).Get<GoogleProviderSetting>();
                     options.ClientId = google.ClientId;
                     options.ClientSecret = google.ClientSecret;
-                })
-                .AddGitHub(nameof(Provider.GitHub), options =>
+                });
+            }
+
+            var github = Configuration.GetSection("External").GetSection(nameof(Provider.GitHub)).Get<GitHubProviderSetting>();
+            if (!String.IsNullOrWhiteSpace(github?.ClientId))
+            {
+                authentication.AddGitHub(nameof(Provider.GitHub), options =>
                 {
                     options.CallbackPath = new PathString("/auth/github-callback");
 
-                    var github = Configuration.GetSection("External").GetSection(nameof(Provider.GitHub)).Get<GitHubProviderSetting>();
                     options.ClientId = github.ClientId;
                     options.ClientSecret = github.ClientSecret;
 
-                })
-                .AddOpenIdConnect(nameof(Provider.Azure), Provider.Azure, options =>
+                });
+            }
+
+            var azure = Configuration.GetSection("External").GetSection(nameof(Provider.Azure)).Get<AzureProviderSetting>();
+            if (!String.IsNullOrWhiteSpace(azure?.ClientId))
+            {
+                authentication.AddOpenIdConnect(nameof(Provider.Azure), Provider.Azure, options =>
                 {
                     options.CallbackPath = new PathString("/auth/azure-callback");
 
-                    var azure = Configuration.GetSection("External").GetSection(nameof(Provider.Azure)).Get<AzureProviderSetting>();
                     options.Authority = azure.AuthorityFull;
                     options.ClientId = azure.ClientId;
                     options.ClientSecret = azure.ClientSecret;
                     options.ResponseType = azure.ResponseType;
                 });
-
-
+            }
 
             if (Environment.IsDevelopment())
             {
