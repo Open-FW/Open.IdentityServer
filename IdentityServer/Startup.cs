@@ -2,14 +2,15 @@
 using System;
 
 using IdentityServer.Domain.Identity;
+using IdentityServer.Domain.Modules.LdapModule;
+using IdentityServer.Domain.Modules.ProviderModule;
 using IdentityServer.Infrastructure;
 using IdentityServer.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,15 +31,16 @@ namespace IdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             string provider = Configuration["Provider"];
-            string connectionString = Configuration.GetSection("ConnectionStrings").GetSection(provider)["Default"]; //GetConnectionString("Default");
+            string connectionString = Configuration.GetSection("ConnectionStrings").GetSection(provider)["Default"];
             string migrationAssembly = $"IdentityServer.Migrations.{provider}";
+
+            services.AddSingleton(Configuration.GetSection("LDAP").Get<LdapSetting>());
 
             services.AddControllers();
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-            {
-                options.UseProvider(provider, connectionString, migrationAssembly);
-            });
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseProvider(provider, connectionString, migrationAssembly));
+
+            services.AddScoped<LdapService>();
 
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 
@@ -63,6 +65,47 @@ namespace IdentityServer
             .AddInMemoryClients(Config.GetClients())
             .AddProfileService<ProfileService>()
             .AddAspNetIdentity<AppUser>();
+
+            var authentication = services.AddAuthentication();
+
+            var google = Configuration.GetSection("External").GetSection(nameof(Provider.Google)).Get<GoogleProviderSetting>();
+            if (!String.IsNullOrWhiteSpace(google?.ClientId))
+            {
+                authentication.AddGoogle(nameof(Provider.Google), options =>
+                {
+                    options.CallbackPath = new PathString("/auth/google-callback");
+
+                    options.ClientId = google.ClientId;
+                    options.ClientSecret = google.ClientSecret;
+                });
+            }
+
+            var github = Configuration.GetSection("External").GetSection(nameof(Provider.GitHub)).Get<GitHubProviderSetting>();
+            if (!String.IsNullOrWhiteSpace(github?.ClientId))
+            {
+                authentication.AddGitHub(nameof(Provider.GitHub), options =>
+                {
+                    options.CallbackPath = new PathString("/auth/github-callback");
+
+                    options.ClientId = github.ClientId;
+                    options.ClientSecret = github.ClientSecret;
+
+                });
+            }
+
+            var azure = Configuration.GetSection("External").GetSection(nameof(Provider.Azure)).Get<AzureProviderSetting>();
+            if (!String.IsNullOrWhiteSpace(azure?.ClientId))
+            {
+                authentication.AddOpenIdConnect(nameof(Provider.Azure), Provider.Azure, options =>
+                {
+                    options.CallbackPath = new PathString("/auth/azure-callback");
+
+                    options.Authority = azure.AuthorityFull;
+                    options.ClientId = azure.ClientId;
+                    options.ClientSecret = azure.ClientSecret;
+                    options.ResponseType = azure.ResponseType;
+                });
+            }
 
             if (Environment.IsDevelopment())
             {
@@ -90,6 +133,8 @@ namespace IdentityServer
             app.UseRouting();
 
             app.UseIdentityServer();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
