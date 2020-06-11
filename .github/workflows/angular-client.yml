@@ -54,4 +54,4 @@ jobs:
     - name: TSLint checks
       uses: mooyoul/tslint-actions@v1.1.1
       with:
-        description: ${{ env.working-directory }}
+        config: ${{ env.working-directory }}
