@@ -54,6 +54,6 @@ jobs:
     - name: TSLint checks
       uses: mooyoul/tslint-actions@v1.1.1
       with:
-        config: ${{ env.working-directory }}
+        config: ${{ env.working-directory }}/tslint.json
         token: ${{ secrets.GH_TOKEN }}
         pattern: '*.ts'
