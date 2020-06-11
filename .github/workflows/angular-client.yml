@@ -40,20 +40,3 @@ jobs:
       working-directory: ${{ env.working-directory }}
       run: |
         npm run build
-  lint:
-    runs-on: ubuntu-latest
-    env:
-      working-directory: IdentityServer/ClientApp
-    strategy:
-      matrix:
-        node_version: [12.x]
-    
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: TSLint checks
-      uses: mooyoul/tslint-actions@v1.1.1
-      with:
-        config: ${{ env.working-directory }}/tslint.json
-        token: ${{ secrets.GH_TOKEN }}
-        pattern: '*.ts'
