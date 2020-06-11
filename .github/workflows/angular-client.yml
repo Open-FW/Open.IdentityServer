@@ -31,5 +31,4 @@ jobs:
     - name: Build & Lint
       working-directory: ${{ env.working-directory }}
       run: |
-        npm run build
-        npm run lint
+        npm run build        
