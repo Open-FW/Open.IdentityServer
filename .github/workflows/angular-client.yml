@@ -55,4 +55,5 @@ jobs:
       uses: mooyoul/tslint-actions@v1.1.1
       with:
         config: ${{ env.working-directory }}
+        token: ${{ secrets.GH_TOKEN }}
         pattern: '*.ts'
