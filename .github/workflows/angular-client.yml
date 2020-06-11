@@ -1,0 +1,42 @@
+
+name: Angular - client
+
+on:
+  push:
+    branches: [ master, feature/** ]
+  pull_request:
+    branches: [ master ]
+
+jobs:  
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [12.x]
+    
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup working directory
+      working-directory: IdentityServer/ClientApp
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node_version }}
+    
+    - name: Install Dependencies
+      run: npm ci
+      
+    - name: Build & Lint
+      run: |
+        npm run build
+        npm run lint
