@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      working-directory: IdentityServer/ClientApp
+      working-directory: Open.IdentityServer/ClientApp
     strategy:
       matrix:
         node_version: [12.x]
