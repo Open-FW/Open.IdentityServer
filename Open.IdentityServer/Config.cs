@@ -23,11 +23,11 @@ namespace Open.IdentityServer
             {
                 new ApiResource("resourceapi", "Resource API")
                 {
-                    Scopes = {new Scope("api.read")}
+                    Scopes = {"api.read"}
                 },
                 new ApiResource("resourceis", "Resource IS")
                 {
-                    Scopes = {new Scope("is.admin")}
+                    Scopes = {"is.admin"}
                 }
             };
         }
