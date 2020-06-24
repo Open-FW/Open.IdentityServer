@@ -342,3 +342,6 @@ healthchecksdb
 
 # Others
 .env
+
+/IdentityServer/ClientApp/dist/out-tsc
+/IdentityServer/ClientApp/out-tsc/e2e
