@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Open.IdentityServer.Infrastructure;
 
 namespace Open.IdentityServer.Migrations.MySQL.AppPersistedGrant
 {
     [DbContext(typeof(AppPersistedGrantDbContext))]
-    partial class AppPersistedGrantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200625185203_Identity4")]
+    partial class Identity4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

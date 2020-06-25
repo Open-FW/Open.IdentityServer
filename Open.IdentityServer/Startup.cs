@@ -21,8 +21,8 @@ namespace Open.IdentityServer
     {
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            Configuration = configuration;
-            Environment = environment;
+            this.Configuration = configuration;
+            this.Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -30,11 +30,11 @@ namespace Open.IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string provider = Configuration["Provider"];
-            string connectionString = Configuration.GetSection("ConnectionStrings").GetSection(provider)["Default"];
-            string migrationAssembly = $"IdentityServer.Migrations.{provider}";
+            string provider = this.Configuration["Provider"];
+            string connectionString = this.Configuration.GetSection("ConnectionStrings").GetSection(provider)["Default"];
+            string migrationAssembly = $"Open.IdentityServer.Migrations.{provider}";
 
-            services.AddSingleton(Configuration.GetSection("LDAP").Get<LdapSetting>());
+            services.Configure<LdapSettings>(this.Configuration.GetSection("LDAP"));
 
             services.AddControllers();
 
@@ -68,8 +68,8 @@ namespace Open.IdentityServer
 
             var authentication = services.AddAuthentication();
 
-            var google = Configuration.GetSection("External").GetSection(nameof(Provider.Google)).Get<GoogleProviderSetting>();
-            if (!String.IsNullOrWhiteSpace(google?.ClientId))
+            var google = this.Configuration.GetSection("External").GetSection(nameof(Provider.Google)).Get<GoogleProviderSetting>();
+            if (!string.IsNullOrWhiteSpace(google?.ClientId))
             {
                 authentication.AddGoogle(nameof(Provider.Google), options =>
                 {
@@ -80,8 +80,8 @@ namespace Open.IdentityServer
                 });
             }
 
-            var github = Configuration.GetSection("External").GetSection(nameof(Provider.GitHub)).Get<GitHubProviderSetting>();
-            if (!String.IsNullOrWhiteSpace(github?.ClientId))
+            var github = this.Configuration.GetSection("External").GetSection(nameof(Provider.GitHub)).Get<GitHubProviderSetting>();
+            if (!string.IsNullOrWhiteSpace(github?.ClientId))
             {
                 authentication.AddGitHub(nameof(Provider.GitHub), options =>
                 {
@@ -93,8 +93,8 @@ namespace Open.IdentityServer
                 });
             }
 
-            var azure = Configuration.GetSection("External").GetSection(nameof(Provider.Azure)).Get<AzureProviderSetting>();
-            if (!String.IsNullOrWhiteSpace(azure?.ClientId))
+            var azure = this.Configuration.GetSection("External").GetSection(nameof(Provider.Azure)).Get<AzureProviderSetting>();
+            if (!string.IsNullOrWhiteSpace(azure?.ClientId))
             {
                 authentication.AddOpenIdConnect(nameof(Provider.Azure), Provider.Azure, options =>
                 {
@@ -107,7 +107,7 @@ namespace Open.IdentityServer
                 });
             }
 
-            if (Environment.IsDevelopment())
+            if (this.Environment.IsDevelopment())
             {
                 identityBuilder.AddDeveloperSigningCredential();
             }
@@ -121,7 +121,7 @@ namespace Open.IdentityServer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

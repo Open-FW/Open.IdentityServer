@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Open.IdentityServer.Infrastructure;
@@ -9,9 +10,10 @@ using Open.IdentityServer.Infrastructure;
 namespace Open.IdentityServer.Migrations.PostgreSQL.AppConfiguration
 {
     [DbContext(typeof(AppConfigurationDbContext))]
-    partial class AppConfigurationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200625184352_Identity4")]
+    partial class Identity4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

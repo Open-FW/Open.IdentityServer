@@ -1,19 +1,20 @@
 
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Extensions.Options;
 using Novell.Directory.Ldap;
+using System;
 
 namespace Open.IdentityServer.Domain.Modules.LdapModule
 {
     public class LdapService
     {
         private readonly ILogger<LdapService> logger;
-        private readonly LdapSetting ldap;
+        private readonly LdapSettings ldap;
 
-        public LdapService(ILogger<LdapService> logger, LdapSetting ldap)
+        public LdapService(ILogger<LdapService> logger, IOptions<LdapSettings> ldapAccessor)
         {
             this.logger = logger;
-            this.ldap = ldap;
+            this.ldap = ldapAccessor?.Value ?? throw new ArgumentNullException($"{nameof(ldapAccessor)}");
         }
 
         public LdapUser? ValidateUser(string username, string password)
@@ -23,7 +24,7 @@ namespace Open.IdentityServer.Domain.Modules.LdapModule
             {
                 using (var connection = new LdapConnection { SecureSocketLayer = false })
                 {
-                    connection.Connect(this.ldap.Host, this.ldap.Port);
+                    connection.Connect(this.ldap.Host, this.ldap.Port ?? 389);
                     connection.Bind(userDn, password);
 
                     if (!connection.Bound)
