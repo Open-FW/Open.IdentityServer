@@ -16,7 +16,7 @@ export class AuthService {
         redirect_uri: `${environment.uri}/auth/signin-callback`,
         post_logout_redirect_uri: `${environment.uri}/auth/signout-callback`,
         response_type: 'code',
-        scope: 'openid profile email is.admin',
+        scope: 'openid profile email',
         filterProtocolClaims: true,
         loadUserInfo: true
     })

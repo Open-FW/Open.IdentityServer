@@ -113,10 +113,11 @@ namespace Open.IdentityServer
             }
             else
             {
-                throw new Exception("Need to confgure key");
+                // TO-DO temporary, need to set up proper key
+                identityBuilder.AddDeveloperSigningCredential();
             }
 
-            services.AddSpaStaticFiles(options => options.RootPath = "ClientApp/dist");
+            services.AddSpaStaticFiles(options => options.RootPath = "wwwroot");
             services.AddResponseCompression();
         }
 
