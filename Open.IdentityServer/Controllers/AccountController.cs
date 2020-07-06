@@ -55,7 +55,7 @@ namespace Open.IdentityServer.Controllers
 
                 if (context == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Invalid returnUrl");
                 }
 
                 if (model.Ldap)
@@ -95,6 +95,8 @@ namespace Open.IdentityServer.Controllers
 
 
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+
+                return Unauthorized(ModelState);
             }
 
             return BadRequest(ModelState);
